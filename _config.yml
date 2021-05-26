@@ -1,11 +1,11 @@
 # Site settings
-author: imperative-scientist-4600
-title: 
+author: Nick Lombardi
+title: Flatiron School Projects
 header-img: img/home-bg.png
 email: nelom3@gmail.com
-copyright_name: imperative-scientist-4600
+copyright_name: Nick Lombardi
 description: > # this means to ignore newlines until "baseurl:"
-  
+  Learning How To Build Software
 baseurl: "" # the subpath of your site, e.g. /blog
 twitter_username: 
 github_username:  nedlom
