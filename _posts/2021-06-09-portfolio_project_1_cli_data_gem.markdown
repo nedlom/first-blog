@@ -6,6 +6,8 @@ permalink:  portfolio_project_1_cli_data_gem
 ---
 
 
+
+
 Tasked with building a command line interface (CLI) that scrapes data from a website, has classes that define and create objects that model the data, and offers a user-friendy, text-based interface to interact with those objects, I selected a website that offered a list-based presentation of items that would be familiar enough to work with given the previous lessons in the course: books. 
 
 Goodreads offers a few "most read" book lists. I chose the Most Read Books This Week In The United States list.
@@ -13,6 +15,8 @@ Goodreads offers a few "most read" book lists. I chose the Most Read Books This 
 Each book listed on the main page is linked to a seperate page that provides extra details. A quick scan of both these sources implied that the following attributes could be retrieved:
 
 ```
+class MostReadBooks::Book
+
   attr_accessor :title, :author, :url, :ratings, :readers, :doc, :format, :page_count, :publisher, :summary, :about_author
 
   def initialize(title=nil, author=nil, url=nil, ratings=nil, readers=nil)
@@ -23,11 +27,14 @@ Each book listed on the main page is linked to a seperate page that provides ext
     @readers = readers
     self.class.all << self
   end
+	. . .
+	
+end
 ```
 
 The instance variables set in #initialize represent data that can be scraped directly from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
 
-The first function called upon is #start.
+The first function called when app starts up is #start.
 
 ```
 class MostReadBooks::CLI
@@ -41,6 +48,9 @@ class MostReadBooks::CLI
     puts ""
     list_books
   end
+	. . .
+	
+end
 ```
 
 This method intializes a new scraper and and calls the #scrape_books on this new instance: 
@@ -63,6 +73,55 @@ end
 
 This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) that we call #css method on to extract data. It then iterates over a NodeSet and uses the #css method to grab the ...
 
+```
+  def list_books
+    print "How many books would you like to see? Enter a number from 1-#{MostReadBooks::Book.all.length}: "
+    @input = gets.strip.to_i
+    puts ""
+    if (1..MostReadBooks::Book.all.length).include?(@input)
+      puts "---Top #{@input} Most Read Books This Week"
+      MostReadBooks::Book.print_books(@input)
+      puts ""
+      get_book
+    else
+      puts "Please enter a number from 1-#{MostReadBooks::Book.all.length}."
+      puts ""
+      menu
+    end
+  end
+  
+  def get_book
+    print "Select a book number for details (1-#{@input}): "
+    book_number = gets.strip.to_i
+    if (1..@input).include?(book_number)
+      book = MostReadBooks::Book.find(book_number)
+      puts ""
+      display_book(book)
+    else
+      puts "Please enter a number from 1 - #{@input}."
+      get_book
+    end
+  end
+  
+  def display_book(book)
+    puts "---Number #{MostReadBooks::Book.all.index(book) + 1} Most Read Book This Week"
+    puts "Title: #{book.title}"
+    puts "Author: #{book.author}"
+    puts "Publisher: #{book.publisher}"
+    puts "Format: #{book.format}"
+    puts "Page Count: #{book.page_count}"
+    puts ""
+    puts "#{book.title} has been read by #{book.readers} people this week."
+    puts ""
+    puts "---Summary"
+    puts book.summary
+    puts ""
+    puts "---About Author"
+    puts book.about_author
+    puts ""
+    see_more_books_or_exit
+  end
+```
 
 ```
 class MostReadBooks::Book
@@ -102,6 +161,8 @@ Note that in both the methods definded above doc.css(...) is being passed to for
 The format_paragraphs method is something I wrote to maintain the structure of the texts as seen on the website while being presented to the user of Most Read Books in plain text in the command line.  This proved to be tricky as the formatting was not uniform and there were a number of unique edge cases that popped up and had to be dealt. 
 
 I didn't want summary and about_author to hold one large chunk of confusing text, but a string formatted to print to the screen with the exact same structure presented on GoodReads.
+
+rather than capture a large block of text and format it afterwards I thought it best to capture the formatting as it came in.
 
 ```
   def format_text(element)
