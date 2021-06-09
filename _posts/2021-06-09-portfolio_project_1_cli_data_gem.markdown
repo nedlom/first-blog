@@ -34,7 +34,7 @@ end
 
 The instance variables set in #initialize represent data that can be scraped directly from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
 
-The first function called when app starts up is #start.
+The first function called when app starts up is **start**.
 
 ```
 class MostReadBooks::CLI
@@ -53,7 +53,7 @@ class MostReadBooks::CLI
 end
 ```
 
-This method intializes a new scraper and and calls the #scrape_books on this new instance: 
+This method intializes a new scraper and and calls the **scrape_books** on this new instance: 
 ```
   
 class MostReadBooks::Scraper
