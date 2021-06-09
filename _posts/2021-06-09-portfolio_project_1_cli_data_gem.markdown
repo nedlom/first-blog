@@ -32,7 +32,7 @@ class MostReadBooks::Book
 end
 ```
 
-The instance variables set in #initialize represent data that can be scraped directly from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
+The instance variables defined **initialize** represent data that can be scraped directly from the main page and the remaining attr_accessors  is everything that can be retrieved from an individual book's page. 
 
 The first method called when app starts up is, appropriately named I think, **start**.
 
@@ -48,7 +48,7 @@ class MostReadBooks::CLI
     puts ""
     list_books
   end
-	. . .
+  . . .
 	
 end
 ```
@@ -57,6 +57,7 @@ This method intializes a new scraper and and calls the **scrape_books** on this 
 ```
   
 class MostReadBooks::Scraper
+
   def scrape_books
     page = Nokogiri::HTML(open("https://www.goodreads.com/book/most_read").read)
     page.css("tr").each do |b|
@@ -68,10 +69,13 @@ class MostReadBooks::Scraper
       MostReadBooks::Book.new(title, author, url, ratings, readers)
     end
   end
+	
 end
 ```
 
 This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) that we call #css method on to extract data. It then iterates over a NodeSet and uses the #css method to grab the ...
+
+It passes that data to the Book class and a new book object is instantiated.
 
 ```
   def list_books
