@@ -29,7 +29,7 @@ end
 
 The data stored in the instance variables defined in `initialize` could be scraped directly from the main list and the remaining methods defined using `attr_accessor`  would extract their data from individual book pages.
 
-The first method called when app starts up is, appropriately named I think, `start`.
+The first method called when the app starts up is, appropriately named I think, `start`.
 
 ```
 class MostReadBooks::CLI
@@ -48,7 +48,7 @@ class MostReadBooks::CLI
 end
 ```
 
-This method instanitates a new scraper object and and calls `scrape_books` on this new instance: 
+This method instanitates a new scraper object and and calls `scrape_books` on this new instance of Scraper: 
 ```
   
 class MostReadBooks::Scraper
@@ -127,6 +127,8 @@ class MostReadBooks::CLI
 	
 end
 ```
+
+The only instance variable defined in the CLI class is `@input`. The reason being that I wanted  `list_books` and `get_book` to be seperate methods, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books listed, which is precisely the information `@input` holds.
 
 ```
 class MostReadBooks::Book
