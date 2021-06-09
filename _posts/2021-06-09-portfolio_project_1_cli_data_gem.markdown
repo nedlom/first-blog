@@ -10,7 +10,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Tasked with building a command line interface (CLI) that scrapes data from a website, has classes that define and create objects that model the data, and offers a user-friendy, text-based interface to interact with those objects, I selected a website that offered a list-based presentation of items that would be familiar enough to work with given the previous lessons in the course: books. 
 
-Goodreads offers a few "most read" book lists. I chose the Most Read Books This Week In The United States list.
+Goodreads has a few nice book lists. I chose the Most Read Books This Week In The United States list.
 
 Each book listed on the main page is linked to a seperate page that provides extra details. A quick scan of both these sources implied that the following attributes could be retrieved:
 
@@ -32,9 +32,9 @@ class MostReadBooks::Book
 end
 ```
 
-The instance variables being initialized in **initialize** represent data that can be scraped directly from the main page and the remaining attr_accessors  is everything that can be retrieved from an individual book's page. 
+The instance variables being initialized in `initialize` represent data that can be scraped directly from the main page and the remaining methods defined using `attr_accessor` repsent the remaining data that can be scraped from an individual book's page. 
 
-The first method called when app starts up is, appropriately named I think, **start**.
+The first method called when app starts up is, appropriately named I think, `start`.
 
 ```
 class MostReadBooks::CLI
@@ -93,7 +93,7 @@ class MostReadBooks::CLI
     else
       puts "Please enter a number from 1-#{MostReadBooks::Book.all.length}."
       puts ""
-      menu
+      list_books
     end
   end
   
