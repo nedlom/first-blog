@@ -8,9 +8,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Tasked with building a command line interface (CLI) that scrapes data from a website, has classes that define and create objects that model the data, and offers a user-friendy, text-based interface to interact with those objects, I selected a website that offered a list-based presentation of items that would be familiar enough to work with given the previous lessons in the course: books. 
 
-Goodreads offers a number of "most read" book lists. I chose the most read books in United States this week.
-
-Most Read Books This Week In The United States
+Goodreads offers a few "most read" book lists. I chose the Most Read Books This Week In The United States list.
 
 Each book listed on the main page is linked to a seperate page that provides extra details. A quick scan of both these sources implied that the following attributes could be retrieved:
 
@@ -27,11 +25,13 @@ Each book listed on the main page is linked to a seperate page that provides ext
   end
 ```
 
-The instance variables defined in the initialize represent the data that can be scraped from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
+The instance variables set in #initialize represent data that can be scraped directly from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
 
 The first function called upon is #start.
 
 ```
+class MostReadBooks::CLI
+
   def start
     MostReadBooks::Scraper.new.scrape_books
     puts ""
@@ -61,8 +61,76 @@ class MostReadBooks::Scraper
 end
 ```
 
-This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) we can call methods on that allow us to easily extract the desired data. It then iterates over a NodeSet and uses the #css method to grab the ...
+This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) that we call #css method on to extract data. It then iterates over a NodeSet and uses the #css method to grab the ...
 
+
+```
+class MostReadBooks::Book
+  . . .
+	
+  def doc
+    @doc ||= Nokogiri::HTML(open(self.url).read)
+  end
+  
+  def format
+    @format ||= doc.css("#details .row")[0].text.split(/, | pages/).first
+  end
+	. . .
+	
+```
+
+```
+  def summary
+    @summary ||= format_text(doc.css("#description span").last) #[1]
+  end
+  
+  def about_author
+    @about_author ||= if doc.css(".bookAuthorProfile span").empty?
+      @about_author = "There is no information for this author"
+    else
+      if doc.css(".bookAuthorProfile span").length == 2
+        @about_author = format_text(doc.css(".bookAuthorProfile span").last) #[1]
+      else
+        @about_author = format_text(doc.css(".bookAuthorProfile span").first) #[0]
+      end
+    end
+  end
+```
+
+```
+  def format_text(element)
+    # issues at: 1, 8, 17, 21, 32, 50
+    # else condtions deals with non-text nodes that have their own text/formatting
+    text_array = element.children.map do |node|
+      if node.children.empty? 
+        node.text
+      else
+        node.children.map do |a|
+          a.text
+        end
+      end
+    end.flatten
+    
+    text_groups = text_array.chunk do |line|
+      line != "" && line != " "
+    end.to_a
+    
+    paragraphs = text_groups.map do |group|
+      group[1].join if group[0]
+    end.compact
+    
+    # removes a reference to an image seen on webpage.
+    paragraphs.delete_at(0) if paragraphs[0].downcase.include?("edition")
+
+    paragraph_lines = paragraphs.map do |paragraph|
+      paragraph.scan(/(.{1,75})(?:\s|$)/m)
+    end
+
+    paragraph_lines.map do |line|
+      line.join("\n") 
+    end.join("\n\n")
+  end
+```
 
 Don't get hung up on trying to build something profound.
 My suggestion is to not spend too much time on finding the perfect website or coming up with the most interesting idea. Pick a website that approximates the examples highlighted in the lessons and tutorial and just start coding. What makes a website harder or easier to work with will become clear as you start going through of building your application. At this point it's not such a big deal to scrap what you've been doing and choose another website because the way forward and potential pitfalls will be clear.  
