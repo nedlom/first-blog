@@ -8,6 +8,8 @@ permalink:  portfolio_project_1_cli_data_gem
 
 
 
+The first project at Flatiron School had me create a command line interface (CLI) application. This application had to scrape data from a website, use that data create objects modeling the items the data represented, and offer an interface for users to interact with these objects. 
+
 Tasked with building a command line interface (CLI) that scrapes data from a website, has classes that define and create objects that model the data, and offers a user-friendy, text-based interface to interact with those objects, I selected a website that offered a list-based presentation of items that would be familiar enough to work with given the previous lessons in the course: books. 
 
 Goodreads has a few nice book lists. I chose the Most Read Books This Week In The United States list.
@@ -32,7 +34,7 @@ class MostReadBooks::Book
 end
 ```
 
-The instance variables being initialized in `initialize` represent data that can be scraped directly from the main page and the remaining methods defined using `attr_accessor` repsent the remaining data that can be scraped from an individual book's page. 
+The instance variables defined in `initialize` represent data scraped directly from the book list page and the remaining methods defined using `attr_accessor` represent data scraped from an individual book's page. 
 
 The first method called when app starts up is, appropriately named I think, `start`.
 
