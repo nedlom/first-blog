@@ -129,6 +129,7 @@ class MostReadBooks::CLI
     see_more_books_or_exit
   end
   . . .
+	
 end
 ```
 
@@ -144,6 +145,7 @@ class MostReadBooks::Book
     @format ||= doc.css("#details .row")[0].text.split(/, | pages/).first
   end
   . . .
+	
 end
 ```
 
@@ -167,6 +169,7 @@ class MostReadBooks::Book
     end
   end
   . . .
+	
 end
 ```
 
