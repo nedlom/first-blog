@@ -5,9 +5,6 @@ date:       2021-06-09 13:27:54 -0400
 permalink:  portfolio_project_1_cli_data_gem
 ---
 
-
-
-
 Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
 Goodreads has a few nice book lists. I chose the Most Read Books This Week In The United States list
