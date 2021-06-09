@@ -12,6 +12,21 @@ Goodreads offers a number of "most read" book lists. I chose the most read books
 
 Most Read Books This Week In The United States
 
+
+```
+  attr_accessor :title, :author, :url, :ratings, :readers, :doc, :format, :page_count, :publisher, :summary, :about_author
+
+  def initialize(title=nil, author=nil, url=nil, ratings=nil, readers=nil)
+    @title = title
+    @author = author
+    @url = url
+    @ratings = ratings
+    @readers = readers
+    self.class.all << self
+  end
+```
+
+
 The first function called upon is #start.
 
 ```
@@ -30,7 +45,6 @@ This method intializes a new scraper and and calls the #scrape_books on this new
 ```
   
 class MostReadBooks::Scraper
-
   def scrape_books
     page = Nokogiri::HTML(open("https://www.goodreads.com/book/most_read").read)
     page.css("tr").each do |b|
@@ -45,5 +59,8 @@ class MostReadBooks::Scraper
 end
 ```
 
-This is the only method defined in the Scraper class. It's job is 
+This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) we can call methods on that allow us to easily extract the desired data. It then iterates over a NodeSet and uses the #css method to grab the ...
 
+
+Don't get hung up on trying to build something profound.
+My suggestion is to not spend too much time on finding the perfect website or coming up with the most interesting idea. Pick a website that approximates the examples highlighted in the lessons and tutorial and just start coding. What makes a website harder or easier to work with will become clear as you start going through of building your application. At this point it's not such a big deal to scrap what you've been doing and choose another website because the way forward and potential pitfalls will be clear.  
