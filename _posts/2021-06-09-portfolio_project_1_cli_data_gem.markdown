@@ -97,6 +97,10 @@ class MostReadBooks::Book
   end
 ```
 
+Note that in both the methods definded above doc.css(...) is being passed to format_text. These two attributes presented unique challenges in that on the website they are presented as paragraphs structured to present information in a particular way. 
+
+The format_paragraphs method is something I wrote to maintain the structure of the texts as seen on the website while being presented to the user of Most Read Books in plain text in the command line.  This proved to be tricky as the formatting was not uniform and there were a number of unique edge cases that popped up and had to be dealt. 
+
 ```
   def format_text(element)
     # issues at: 1, 8, 17, 21, 32, 50
