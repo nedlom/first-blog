@@ -32,7 +32,7 @@ class MostReadBooks::Book
 end
 ```
 
-The instance variables defined **initialize** represent data that can be scraped directly from the main page and the remaining attr_accessors  is everything that can be retrieved from an individual book's page. 
+The instance variables being initialized in **initialize** represent data that can be scraped directly from the main page and the remaining attr_accessors  is everything that can be retrieved from an individual book's page. 
 
 The first method called when app starts up is, appropriately named I think, **start**.
 
