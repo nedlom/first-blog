@@ -27,7 +27,7 @@ class MostReadBooks::Book
     @readers = readers
     self.class.all << self
   end
-	...
+. . .
 	
 end
 ```
