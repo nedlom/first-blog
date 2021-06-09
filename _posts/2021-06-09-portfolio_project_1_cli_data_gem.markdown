@@ -12,6 +12,7 @@ Goodreads offers a number of "most read" book lists. I chose the most read books
 
 Most Read Books This Week In The United States
 
+Each book listed on the main page is linked to a seperate page that provides extra details. A quick scan of both these sources implied that the following attributes could be retrieved:
 
 ```
   attr_accessor :title, :author, :url, :ratings, :readers, :doc, :format, :page_count, :publisher, :summary, :about_author
@@ -26,6 +27,7 @@ Most Read Books This Week In The United States
   end
 ```
 
+The instance variables defined in the initialize represent the data that can be scraped from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
 
 The first function called upon is #start.
 
