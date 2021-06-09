@@ -27,14 +27,14 @@ class MostReadBooks::Book
     @readers = readers
     self.class.all << self
   end
-	. . .
+	...
 	
 end
 ```
 
 The instance variables set in #initialize represent data that can be scraped directly from the main page and the remaining attr_accessors tell us everything that can be retrieved from a book's personal webpage. 
 
-The first function called when app starts up is **start**.
+The first function called when app starts up is, appropriately named I think, **start**.
 
 ```
 class MostReadBooks::CLI
