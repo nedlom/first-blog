@@ -53,7 +53,7 @@ class MostReadBooks::CLI
 end
 ```
 
-This method intializes a new scraper and and calls the **scrape_books** on this new instance: 
+This method instanitates a new scraper object and and calls the **scrape_books** on this new instance: 
 ```
   
 class MostReadBooks::Scraper
@@ -75,9 +75,12 @@ end
 
 This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) that we call #css method on to extract data. It then iterates over a NodeSet and uses the #css method to grab the ...
 
-It passes that data to the Book class and a new book object is instantiated.
+It passes that data to the Book class where a new book instance is created.
 
 ```
+class MostReadBooks::CLI
+  . . .
+	
   def list_books
     print "How many books would you like to see? Enter a number from 1-#{MostReadBooks::Book.all.length}: "
     @input = gets.strip.to_i
@@ -125,6 +128,8 @@ It passes that data to the Book class and a new book object is instantiated.
     puts ""
     see_more_books_or_exit
   end
+  . . .
+end
 ```
 
 ```
@@ -138,11 +143,14 @@ class MostReadBooks::Book
   def format
     @format ||= doc.css("#details .row")[0].text.split(/, | pages/).first
   end
-	. . .
-	
+  . . .
+end
 ```
 
 ```
+class MostReadBooks::Book
+  . . .
+	
   def summary
     @summary ||= format_text(doc.css("#description span").last) #[1]
   end
@@ -158,6 +166,8 @@ class MostReadBooks::Book
       end
     end
   end
+  . . .
+end
 ```
 
 Note that in both the methods definded above doc.css(...) is being passed to format_text. These two attributes presented unique challenges in that on the website they are presented as paragraphs structured to present information in a particular way. 
