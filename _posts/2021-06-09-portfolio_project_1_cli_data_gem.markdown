@@ -27,7 +27,7 @@ class MostReadBooks::Book
 end
 ```
 
-The data stored in the instance variables defined in `initialize` could be scraped directly from the main book list page and the remaining methods defined using `attr_accessor`  would extract their data from individual book pages.
+The data stored in the instance variables defined in `initialize` could be scraped directly from the main list and the remaining methods defined using `attr_accessor`  would extract their data from individual book pages.
 
 The first method called when app starts up is, appropriately named I think, `start`.
 
@@ -48,7 +48,7 @@ class MostReadBooks::CLI
 end
 ```
 
-This method instanitates a new scraper object and and calls the **scrape_books** on this new instance: 
+This method instanitates a new scraper object and and calls `scrape_books` on this new instance: 
 ```
   
 class MostReadBooks::Scraper
