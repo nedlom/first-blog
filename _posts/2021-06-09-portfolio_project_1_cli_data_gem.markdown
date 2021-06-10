@@ -7,7 +7,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
-Goodreads has a few nice book lists with each associated webpage offering a simple layout and links to individual list item's details page. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. I inspected the main list page and a few individual book pages and determined the following attributes, as defined in the class below, would work for this project:
+Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual list item's details page. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Inspection of the relevant pages determined the following attributes, as defined in the class below, would work for this project:
 
 ```
 class MostReadBooks::Book
@@ -27,9 +27,9 @@ class MostReadBooks::Book
 end
 ```
 
-The data stored in the instance variables defined in `initialize` is scraped directly from the main list and the remaining methods defined using `attr_accessor`  extract their data from individual book pages.
+The data stored in the instance variables upon initialization, defined in `initialize`, is scraped directly from the *Most Read Books This Week In The United States* list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
-The first method called when the app starts up is, appropriately named I think, `start`.
+The first method called when the app starts is, appropriately named I think, `start`:
 
 ```
 class MostReadBooks::CLI
@@ -68,9 +68,7 @@ class MostReadBooks::Scraper
 end
 ```
 
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. It then iterates over a NodeSet and uses the `css` method to grab the 
-
-It passes that data to the Book class where a new instance is created and stored in array. 
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over the appropriate NodeSet we use the `css` method to grab and store data in local variables. We then pass this data to Book's `new` method instaniating and saving a new Book object for each book in webpage's list. Our CLI class then lists the number of book objects our user wants to see:
 
 ```
 class MostReadBooks::CLI
@@ -91,7 +89,9 @@ class MostReadBooks::CLI
       list_books
     end
   end
-  
+	```
+	
+  ```
   def get_book
     print "Select a book number for details (1-#{@input}): "
     book_number = gets.strip.to_i
