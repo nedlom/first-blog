@@ -25,9 +25,9 @@ class MostReadBooks::Book
 	
 end
 ```
-The data stored in the instance variables upon initialization, defined in `initialize`, is scraped directly from the *Most Read Books This Week In The United States* list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
+The data stored in instance variables upon initialization, defined in `initialize`, is scraped directly from the *Most Read Books This Week In The United States* list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
-The first method called when the app starts is, the appropriately named, `start`:
+The CLI class will control the action of the program. Upon starting the application a new CLI object is instantiated and calls, the appropriately named method, `start`:  
 ```
 class MostReadBooks::CLI
 
@@ -62,9 +62,7 @@ class MostReadBooks::Scraper
 	
 end
 ```
-
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over the appropriate NodeSet we use the `css` method to grab and store data in local variables. We then pass this data to Book's `new` method instaniating and saving a new Book object for each book in the webpage's list. Our CLI class then lists the number of book objects our user wants to see:
-
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over the appropriate NodeSet we use the `css` method to grab and store data corresponding to Book attributes in local variables. We then pass these variables to Book's `new` method instaniating and saving a new Book object for each book in the webpage's list. Our CLI class then lists the number of book objects our user wants to see:
 ```
 class MostReadBooks::CLI
   . . .
@@ -85,9 +83,7 @@ class MostReadBooks::CLI
     end
   end
 ```
-
 Once our user selects an appropriate number of books to list, `get_book` is called:
-
 ```
 class MostReadBooks::Book
   . . .
@@ -108,11 +104,9 @@ class MostReadBooks::Book
 	
 end
 ```
-
-The only instance variable defined in the CLI class is `@input` which shows up in `list_books` and `get_book`. The reason being is that I wanted these methods seperate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is precisely the information `@input` holds. 
+The only instance variable defined in the CLI class is `@input` which shows up in `list_books` and `get_book`. I wanted these methods seperate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is precisely the information `@input` holds, so an instance variable made sense here.
 
 Once the user has selected a book, `display_book` is called:
-	
 ```
   def display_book(book)
     puts "---Number #{MostReadBooks::Book.all.index(book) + 1} Most Read Book This Week"
@@ -136,9 +130,7 @@ Once the user has selected a book, `display_book` is called:
 	
 end
 ```
-
 Checking the Book class we can see how the attributes used above that were not defined in Book's `initialize` method are obtained:
-
 ```
 class MostReadBooks::Book
   . . .
@@ -158,11 +150,9 @@ class MostReadBooks::Book
 	
 end
 ```
+`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the book's page. So, the instance variables for a book instance that are not initialized during instantiation are only set once a user selects that particular book.
 
-We can see`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the book's page. So, the instance variables for a book instance that are not initialized during instantiation are only set once a user selects that particular book.
-
-Two methods from the Book class worth discussing are:
-
+Two methods from the Book class are worth noting:
 ```
 class MostReadBooks::Book
   . . .
@@ -186,11 +176,9 @@ class MostReadBooks::Book
 	
 end
 ```
-Both methods definded above pass `doc.css(...)` into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just call `text` on `doc.css(...)` to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build `format_text` to not just get the text from the website, but to also capture the formating defined in the webpage's HTML structuring the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed in the browser on GoodReads. This proved to be tricky as the formatting was not uniform among books, so there was a number of unique cases that had to be dealt with. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
+Both methods definded above pass `doc.css(...)` into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just call `text` on `doc.css(...)` to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build `format_text` to not just get the text from the website, but to also capture the formating used in the webpage's HTML to define the structure of the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed in the browser on GoodReads. This was tricky as the formatting was not uniform among book pages, so there were a number of unique cases that had to be considered. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
 
-Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application. 
-
-A couple of takeaways for anyone who may read this w
+Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application.
 
 Don't get hung up on trying to build something profound or find the perfect website. Pick
 
