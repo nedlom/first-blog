@@ -25,9 +25,9 @@ class MostReadBooks::Book
 	
 end
 ```
-The data assigined to instance variables upon initialization is scraped directly from the [*Most Read Books This Week In The United States*](https://www.goodreads.com/book/most_read) list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
+The data assigned to instance variables upon initialization is scraped directly from the [*Most Read Books This Week In The United States*](https://www.goodreads.com/book/most_read) list, while the remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
-The CLI class will control the action of the program. Upon starting the application a new CLI object is instantiated and calls, the appropriately named method, `start`:  
+The CLI class controls the action of the program. Upon starting the application a new CLI object is instantiated and calls, the appropriately named method, `start`:  
 ```
 class MostReadBooks::CLI
 
@@ -181,14 +181,19 @@ class MostReadBooks::Book
 	
 end
 ```
-`summary` and `about_author` both pass `doc.css(<selector>)` into a method I wrote called `format_text`. While it is possible to call `text` on `doc.css(<selector>)` and have returned a large string of unformatted text, to which I could apply my own formatting before it's printed to the screen, it seemed like a better idea to capture the webpage's structure along with the text when it is read into the program in order to preserve the flow of information defined in the page's HTML. This is precisely what `format_text` does: it returns a string of text we can simply pass to `puts` and have printed to the screen a layout almost identical to what is seen in the brower. This was tricky as the formatting was not uniform among pages, so there were a number of unique cases that had to be considered, but to keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`.
+`summary` and `about_author` both pass `doc.css(<selector>)` into a method I wrote called `format_text`. While it is possible to call `text` on `doc.css(<selector>)` and have returned a large string of unformatted text, to which I could apply my own formatting before it's printed to the screen, it seemed like a better idea to capture the webpage's structure along with the text when it is read into the program in order to preserve the flow of information defined in the page's HTML. This is precisely what `format_text` does: it returns a string of text we can simply pass to `puts` and have printed to the screen a layout almost identical to what is seen in the browser. This was tricky as the formatting was not uniform among pages, so there were a number of unique cases that had to be considered, but to keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`.
 
-Once a book has been displayed `see_more_books_or_exit` is called and the user is given the option to start the selection over or exit the application.
+Once a book has been displayed to the user, `see_more_books_or_exit` is called and the option is given to start the selection process over or exit the application, thus completing one full run through Most Read Books.
 
-Don't get hung up on trying find the perfect website or build something profound. Pick something something that approximates F
+To anyone starting their first portfolio project who finds themself reading this, my advice is as follows:
 
 * Don't get hung up on trying to build something profound.
-* Don't spend too much time trying to find the perfect website.
-* Pick a website that approximates the tutorial examples and start coding. Pitfalls will become clear in the development process and it won't be such a big deal to start over with another site.
-* Learn as much as possible about Git, GitHub, Nokogiri and Bundler.
-* [Watch This](https://www.youtube.com/watch?v=XBgZLm-sdl8)
+* Don't spend a lot of time trying to find the perfect website.
+* Do pick a website that approximates what you've seen in the lead up to the project. 
+* Do spend some time mapping out the structure of your project. 
+
+Then just start writing code. Pitfalls won't become clear until you get to the actual programming. If you hit a wall and can't proceed, it won't be such a big deal to scrap what you've done and start again because you'll have become aware of what to look out for in the next iteration.
+
+The learning is in the doing.
+
+
