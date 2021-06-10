@@ -7,7 +7,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
-Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual book pages. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Three classes would suffice: Books, Scraper, and CLI. Inspection of the site determined the attributes, defined in the class below, that would be used to describe Book objects:
+Goodreads has a few book lists with associated webpages offering simple layouts and links to individual book pages. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Three classes would suffice: Books, Scraper, and CLI. Inspection of the site determined the attributes, defined in the class below, that would be used to describe Book objects:
 ```
 class MostReadBooks::Book
 
@@ -27,7 +27,7 @@ end
 ```
 The data assigned to instance variables upon initialization is scraped directly from the [*Most Read Books This Week In The United States*](https://www.goodreads.com/book/most_read) list, while the remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
-The CLI class controls the action of the program. Upon starting the application a new CLI object is instantiated and calls, the appropriately named method, `start`:  
+The CLI class controls the action of the program. Upon starting the application a new CLI object is instantiated and calls `start`:  
 ```
 class MostReadBooks::CLI
 
