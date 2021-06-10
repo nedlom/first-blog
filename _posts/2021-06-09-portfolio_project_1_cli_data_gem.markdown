@@ -142,7 +142,7 @@ Once the user has selected a book, `display_book` is called:
 end
 ```
 
-Checking back in on the Book class we see that 
+Let's check back in on the Book class to see how we get the attributes not defined in `initialize`:
 
 ```
 class MostReadBooks::Book
@@ -163,6 +163,8 @@ class MostReadBooks::Book
 	
 end
 ```
+
+Here we can see `@doc` is Nokogiri object that stores the nodes corresponding to the HTML of a book's individual webpage
 
 ```
 class MostReadBooks::Book
