@@ -89,11 +89,13 @@ class MostReadBooks::CLI
       list_books
     end
   end
-	```
+```
+
+Once our user selects an appropriate number of books to list, `get_book` is called:
+
 	
-	Once our user selects an appropriate number of books to list, `get_book` is called:
-	
-  ```
+
+```
   def get_book
     print "Select a book number for details (1-#{@input}): "
     book_number = gets.strip.to_i
@@ -106,11 +108,13 @@ class MostReadBooks::CLI
       get_book
     end
   end
-  ```
+```
+
 The only instance variable defined in the CLI class is `@input` which shows up in `list_books` and `get_book`. The reason being is that I wanted these methods seperate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is precisely the information `@input` holds. 
 
 Once the user has selected a book, `display_book` is called:
-	```
+	
+```
   def display_book(book)
     puts "---Number #{MostReadBooks::Book.all.index(book) + 1} Most Read Book This Week"
     puts "Title: #{book.title}"
@@ -149,9 +153,7 @@ class MostReadBooks::Book
   . . .
 	
 end
-```
 
-```
 class MostReadBooks::Book
   . . .
 	
@@ -174,6 +176,7 @@ class MostReadBooks::Book
 	
 end
 ```
+
 
 Note that in both the methods definded above doc.css(...) is being passed to format_text. These two attributes presented unique challenges in that on the website they are presented as paragraphs structured to present information in a particular way. 
 
