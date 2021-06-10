@@ -62,7 +62,7 @@ class MostReadBooks::Scraper
 	
 end
 ```
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over a NodeSet we call `css` on each node to grab and store data corresponding to Book attributes in local variables. We then pass these variables to Book's `new` which instantiates and saves a new Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which will allow the user to select the number of books they want to see: 
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over a NodeSet we call `css` on each node to grab data corresponding to Book attributes and store it in local variables. We then pass these variables to Book's `new` which instantiates and saves a new Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which allows the user to select the number of books they want to see: 
 ```
 class MostReadBooks::CLI
   . . .
@@ -86,7 +86,7 @@ class MostReadBooks::CLI
 	
 end
 ```
-The user selects a number, which is stored in `@input`, and `get_book` is called:
+The user selects a number, which is assigned to `@input`, and `get_book` is called:
 ```
 class MostReadBooks::Book
   . . .
