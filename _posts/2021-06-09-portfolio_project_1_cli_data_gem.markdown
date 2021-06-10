@@ -7,7 +7,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
-Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual list item's details page. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Inspection of the relevant pages determined the following attributes, as defined in the class below, would work for this project:
+Three classes would suffice: Books, Scraper, and CLI, and Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual list item's details page. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Inspection of the relevant pages determined the following attributes, as defined in the class below, would work for this project:
 
 ```
 class MostReadBooks::Book
@@ -142,14 +142,14 @@ Once the user has selected a book, `display_book` is called:
 end
 ```
 
-Let's check back in on the Book class to see how we get the attributes seen above that were not defined in `initialize`:
+Checking the Book class we can see how the attributes used above that were not defined in Book's `initialize` method are obtained:
 
 ```
 class MostReadBooks::Book
   . . .
 	
   def doc
-    @doc ||= Nokogiri::HTML(open(self.url).read)
+    @doc ||= Nokogiri::HTML(open(url).read)
   end
   
   def format
@@ -164,7 +164,7 @@ class MostReadBooks::Book
 end
 ```
 
-Here we can see`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the page. 
+We can see`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the book's page. So, the instance variables for a book instance that are not initialized during instantiation are only set once a user selects that particular book.
 
 Two methods from the Book class worth discussing are:
 
@@ -181,9 +181,9 @@ class MostReadBooks::Book
       @about_author = "There is no information for this author"
     else
       if doc.css(".bookAuthorProfile span").length == 2
-        @about_author = format_text(doc.css(".bookAuthorProfile span").last) #[1]
+        @about_author = format_text(doc.css(".bookAuthorProfile span").last)
       else
-        @about_author = format_text(doc.css(".bookAuthorProfile span").first) #[0]
+        @about_author = format_text(doc.css(".bookAuthorProfile span").first)
       end
     end
   end
@@ -191,12 +191,16 @@ class MostReadBooks::Book
 	
 end
 ```
-In both the methods definded above the value returned by `doc.css(...)` is being passed into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just use the `text` method to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build the `format_text` method to not just get the text from the website, but to also capture the formating defined in the webpage's HTML structuring the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed on GoodReads. This proved to be tricky as the formatting was not uniform and there were a number of unique cases that popped up and had to be dealt with. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
+Both the methods definded above pass `doc.css(...)` into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just use the `text` method to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build the `format_text` method to not just get the text from the website, but to also capture the formating defined in the webpage's HTML structuring the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed on GoodReads. This proved to be tricky as the formatting was not uniform and there were a number of unique cases that popped up and had to be dealt with. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
 
-Once a book is displayed to the user the option is given the option to start the selection process over or exit the application, via `see_more_books_or_exit`, so a user can view books to their heart's content or
+Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application. 
+
+A couple of takeaways for anyone who may read this w
+
+Don't get hung up on trying to build something profound or find the perfect website. Pick
 
 * Don't get hung up on trying to build something profound.
 * Don't spend too much time trying to find the perfect website.
 * Pick a website that approximates the tutorial examples and start coding. Pitfalls will become clear in the development process and it won't be such a big deal to start over with another site.
 * Learn as much as possible about Git, GitHub, Nokogiri and Bundler.
-* Watch this: [](https://www.youtube.com/watch?v=XBgZLm-sdl8)
+* Watch this: [Watch This](https://www.youtube.com/watch?v=XBgZLm-sdl8)
