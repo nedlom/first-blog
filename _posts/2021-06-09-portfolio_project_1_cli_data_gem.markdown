@@ -68,7 +68,7 @@ class MostReadBooks::Scraper
 end
 ```
 
-`scrape_books` is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's `Nokogiri::HTML` method which creates a Nokogiri object that we can call `css` on to extract data. It then iterates over a NodeSet and uses the `css` method to grab the 
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. It then iterates over a NodeSet and uses the `css` method to grab the 
 
 It passes that data to the Book class where a new instance is created and stored in array. 
 
