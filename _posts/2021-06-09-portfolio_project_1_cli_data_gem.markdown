@@ -191,7 +191,7 @@ class MostReadBooks::Book
 	
 end
 ```
-Both the methods definded above pass `doc.css(...)` into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just use the `text` method to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build the `format_text` method to not just get the text from the website, but to also capture the formating defined in the webpage's HTML structuring the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed on GoodReads. This proved to be tricky as the formatting was not uniform and there were a number of unique cases that popped up and had to be dealt with. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
+Both methods definded above pass `doc.css(...)` into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just call `text` on `doc.css(...)` to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build `format_text` to not just get the text from the website, but to also capture the formating defined in the webpage's HTML structuring the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed in the browser on GoodReads. This proved to be tricky as the formatting was not uniform among books, so there was a number of unique cases that had to be dealt with. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
 
 Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application. 
 
@@ -203,4 +203,4 @@ Don't get hung up on trying to build something profound or find the perfect webs
 * Don't spend too much time trying to find the perfect website.
 * Pick a website that approximates the tutorial examples and start coding. Pitfalls will become clear in the development process and it won't be such a big deal to start over with another site.
 * Learn as much as possible about Git, GitHub, Nokogiri and Bundler.
-* Watch this: [Watch This](https://www.youtube.com/watch?v=XBgZLm-sdl8)
+* [Watch This](https://www.youtube.com/watch?v=XBgZLm-sdl8)
