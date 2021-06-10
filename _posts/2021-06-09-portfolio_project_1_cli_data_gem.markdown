@@ -164,7 +164,9 @@ class MostReadBooks::Book
 end
 ```
 
-Here we can see`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the page. Two methods
+Here we can see`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the page. 
+
+Two methods from the Book class worth discussing are:
 
 ```
 class MostReadBooks::Book
@@ -189,15 +191,12 @@ class MostReadBooks::Book
 	
 end
 ```
+In both the methods definded above the value returned by `doc.css(...)` is being passed into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just use the `text` method to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build the `format_text` method to not just get the text from the website, but to also capture the formating defined in the webpage's HTML structuring the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed on GoodReads. This proved to be tricky as the formatting was not uniform and there were a number of unique cases that popped up and had to be dealt with. To keep this article at a reasonable length I'll forego describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
 
+Once a book is displayed to the user the option is given to start the selection process over or exit the application, via `see_more_books_or_exit`, and th
 
-Note that in both the methods definded above doc.css(...) is being passed to format_text. These two attributes presented unique challenges in that on the website they are presented as paragraphs structured to present information in a particular way. 
-
-The format_paragraphs method is something I wrote to maintain the structure of the texts as seen on the website while being presented to the user of Most Read Books in plain text in the command line.  This proved to be tricky as the formatting was not uniform and there were a number of unique edge cases that popped up and had to be dealt. 
-
-I didn't want summary and about_author to hold one large chunk of confusing text, but a string formatted to print to the screen with the exact same structure presented on GoodReads.
-
-rather than capture a large block of text and format it afterwards I thought it best to capture the formatting as it came in.
+* Don't get hung up on trying to build something profound.
+* Don't spend too much time trying to find the perfect website.
 
 
 Don't get hung up on trying to build something profound.
