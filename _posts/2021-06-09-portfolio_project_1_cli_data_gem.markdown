@@ -109,7 +109,7 @@ end
 ```
 `@input` is the one instance variable defined in the CLI class and shows up only in `list_books` and `get_book`. I wanted these methods separate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is the information assigned to `@input`, so an instance variable made sense here.
 
-Once the user has selected a book, `display_book` is called:
+Once the user has selected a book `display_book` is called:
 ```
 class MostReadBooks::Book
   . . .
@@ -183,9 +183,9 @@ end
 ```
 `summary` and `about_author` both pass `doc.css(<selector>)` into a method I wrote called `format_text`. While it is possible to call `text` on `doc.css(<selector>)` and have returned a large string of unformatted text, to which I could apply my own formatting before it's printed to the screen, it seemed like a better idea to capture the webpage's structure along with the text when it is read into the program in order to preserve the flow of information defined in the page's HTML. This is precisely what `format_text` does: it returns a string of text we can simply pass to `puts` and have printed to the screen a layout almost identical to what is seen in the brower. This was tricky as the formatting was not uniform among pages, so there were a number of unique cases that had to be considered, but to keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`.
 
-Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application.
+Once a book has been displayed `see_more_books_or_exit` is called and the user is given the option to start the selection over or exit the application.
 
-Don't get hung up on trying find the perfect website or build something profound. Pick something something that approximates 
+Don't get hung up on trying find the perfect website or build something profound. Pick something something that approximates F
 
 * Don't get hung up on trying to build something profound.
 * Don't spend too much time trying to find the perfect website.
