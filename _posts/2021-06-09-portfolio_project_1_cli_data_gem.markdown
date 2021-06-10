@@ -7,8 +7,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
-Three classes would suffice: Books, Scraper, and CLI, and Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual list item's details page. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Inspection of the relevant pages determined the following attributes, as defined in the class below, would work for this project:
-
+Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual list item's details page. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Three classes would suffice: Books, Scraper, and CLI. Inspection of the site determined the book attributes, seen defined in the class below, that would be used to :
 ```
 class MostReadBooks::Book
 
@@ -28,7 +27,7 @@ end
 ```
 The data stored in the instance variables upon initialization, defined in `initialize`, is scraped directly from the *Most Read Books This Week In The United States* list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
-The first method called when the app starts is, appropriately named I think, `start`:
+The first method called when the app starts is, the appropriately named, `start`:
 ```
 class MostReadBooks::CLI
 
@@ -45,10 +44,8 @@ class MostReadBooks::CLI
 	
 end
 ```
-
 `start` instanitates a Scraper object and and calls `scrape_books` on this new instance: 
 ```
-  
 class MostReadBooks::Scraper
 
   def scrape_books
