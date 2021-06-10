@@ -108,6 +108,8 @@ The only instance variable defined in the CLI class is `@input` which shows up i
 
 Once the user has selected a book, `display_book` is called:
 ```
+class MostReadBooks::Book
+  . . .
   def display_book(book)
     puts "---Number #{MostReadBooks::Book.all.index(book) + 1} Most Read Book This Week"
     puts "Title: #{book.title}"
