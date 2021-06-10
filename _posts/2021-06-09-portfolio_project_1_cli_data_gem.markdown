@@ -25,7 +25,7 @@ class MostReadBooks::Book
 	
 end
 ```
-The data stored in instance variables upon initialization is scraped directly from the [*Most Read Books This Week In The United States*](https://www.goodreads.com/book/most_read) list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
+The data assigined to instance variables upon initialization is scraped directly from the [*Most Read Books This Week In The United States*](https://www.goodreads.com/book/most_read) list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
 The CLI class will control the action of the program. Upon starting the application a new CLI object is instantiated and calls, the appropriately named method, `start`:  
 ```
@@ -62,7 +62,7 @@ class MostReadBooks::Scraper
 	
 end
 ```
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over a NodeSet we call `css` on each node to grab and store data corresponding to Book attributes in local variables. We then pass these variables to Book's `new` method instantiating and saving a new Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which will allow the user to select the number of books they wish to see: 
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over a NodeSet we call `css` on each node to grab and store data corresponding to Book attributes in local variables. We then pass these variables to Book's `new` which instantiates and saves a new Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which will allow the user to select the number of books they want to see: 
 ```
 class MostReadBooks::CLI
   . . .
@@ -107,7 +107,7 @@ class MostReadBooks::Book
 	
 end
 ```
-`@input` is the one instance variable defined in the CLI class and shows up only in `list_books` and `get_book`. I wanted these methods separate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is the information `@input` holds, so an instance variable made sense here.
+`@input` is the one instance variable defined in the CLI class and shows up only in `list_books` and `get_book`. I wanted these methods separate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is the information assigned to `@input`, so an instance variable made sense here.
 
 Once the user has selected a book, `display_book` is called:
 ```
@@ -181,13 +181,11 @@ class MostReadBooks::Book
 	
 end
 ```
-The methods defined above pass `doc.css(<selector>)` into `format_text`--
-
-The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just call `text` on `doc.css(...)` to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build `format_text` to not just get the text from the website, but to also capture the formatting used in the webpage's HTML to define the structure of the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed in the browser on GoodReads. This was tricky as the formatting was not uniform among book pages, so there were a number of unique cases that had to be considered. To keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
+`summary` and `about_author` both pass `doc.css(<selector>)` into a method I wrote called `format_text`. While it is possible to call `text` on `doc.css(<selector>)` and have returned a large string of unformatted text, to which I could apply my own formatting before it's printed to the screen, it seemed like a better idea to capture the webpage's structure along with the text when it is read into the program in order to preserve the flow of information defined in the page's HTML. This is precisely what `format_text` does: it returns a string of text we can simply pass to `puts` and have printed to the screen a layout almost identical to what is seen in the brower. This was tricky as the formatting was not uniform among pages, so there were a number of unique cases that had to be considered, but to keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`.
 
 Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application.
 
-Don't get hung up on trying to build something profound or find the perfect website. Pick
+Don't get hung up on trying find the perfect website or build something profound. Pick something something that approximates 
 
 * Don't get hung up on trying to build something profound.
 * Don't spend too much time trying to find the perfect website.
