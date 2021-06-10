@@ -26,11 +26,9 @@ class MostReadBooks::Book
 	
 end
 ```
-
 The data stored in the instance variables upon initialization, defined in `initialize`, is scraped directly from the *Most Read Books This Week In The United States* list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
 The first method called when the app starts is, appropriately named I think, `start`:
-
 ```
 class MostReadBooks::CLI
 
