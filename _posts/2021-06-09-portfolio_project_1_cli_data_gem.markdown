@@ -7,7 +7,7 @@ permalink:  portfolio_project_1_cli_data_gem
 
 Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
-Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual book pages. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Three classes would suffice: Books, Scraper, and CLI. Inspection of the site determined the attributes, seen defined in the class below, that would be used to describe Book objects:
+Goodreads has a few nice book lists with associated webpages offering simple layouts and links to individual book pages. Their *Most Read Books This Week In The United States* felt like a good choice. It's content is dynamic and structure amenable to scraping. Three classes would suffice: Books, Scraper, and CLI. Inspection of the site determined the attributes, defined in the class below, that would be used to describe Book objects:
 ```
 class MostReadBooks::Book
 
@@ -25,7 +25,7 @@ class MostReadBooks::Book
 	
 end
 ```
-The data stored in instance variables upon initialization, defined in `initialize`, is scraped directly from the *Most Read Books This Week In The United States* list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
+The data stored in instance variables upon initialization is scraped directly from the [*Most Read Books This Week In The United States*](https://www.goodreads.com/book/most_read) list. The remaining methods defined using `attr_accessor` extract their data from individual book pages.
 
 The CLI class will control the action of the program. Upon starting the application a new CLI object is instantiated and calls, the appropriately named method, `start`:  
 ```
@@ -62,7 +62,7 @@ class MostReadBooks::Scraper
 	
 end
 ```
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over a NodeSet we call `css` on each node to grab and store data corresponding to Book attributes in local variables. We then pass these variables to Book's `new` method instantiating and saving a new Book object for each book in the webpage's list. Our CLI class then lists the number of book objects our user wants to see:
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over a NodeSet we call `css` on each node to grab and store data corresponding to Book attributes in local variables. We then pass these variables to Book's `new` method instantiating and saving a new Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which will allow the user to select the number of books they wish to see: 
 ```
 class MostReadBooks::CLI
   . . .
@@ -82,8 +82,11 @@ class MostReadBooks::CLI
       list_books
     end
   end
+  . . .
+	
+end
 ```
-Once our user selects an appropriate number of books to list, `get_book` is called:
+The user selects a number, which is stored in `@input`, and `get_book` is called:
 ```
 class MostReadBooks::Book
   . . .
@@ -104,7 +107,7 @@ class MostReadBooks::Book
 	
 end
 ```
-The only instance variable defined in the CLI class is `@input` which shows up in `list_books` and `get_book`. I wanted these methods separate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is precisely the information `@input` holds, so an instance variable made sense here.
+`@input` is the one instance variable defined in the CLI class and shows up only in `list_books` and `get_book`. I wanted these methods separate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is the information `@input` holds, so an instance variable made sense here.
 
 Once the user has selected a book, `display_book` is called:
 ```
@@ -132,7 +135,7 @@ class MostReadBooks::Book
 	
 end
 ```
-Checking the Book class we can see how the attributes used above that were not defined in Book's `initialize` method are obtained:
+Checking the Book class we can see how the attributes used above, that were not defined in Book's `initialize` method, are obtained:
 ```
 class MostReadBooks::Book
   . . .
@@ -152,7 +155,7 @@ class MostReadBooks::Book
 	
 end
 ```
-`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the book's page. So, the instance variables for a book instance that are not initialized during instantiation are only set once a user selects that particular book.
+`doc` sets (or returns) an instance variable `@doc` which stores a Nokogiri object corresponding to the HTML of a book's individual webpage. `doc` is then used, in conjunction with `css`, in each subsequent method setting an instance variable to the appropriate value scraped from the book's page. So, the instance variables for a Book object that are not set upon instantiation are set once a user selects that particular book.
 
 Two methods from the Book class are worth noting:
 ```
@@ -160,7 +163,7 @@ class MostReadBooks::Book
   . . .
 	
   def summary
-    @summary ||= format_text(doc.css("#description span").last) #[1]
+    @summary ||= format_text(doc.css("#description span").last)
   end
   
   def about_author
@@ -178,7 +181,9 @@ class MostReadBooks::Book
 	
 end
 ```
-Both methods defined above pass `doc.css(...)` into `format_text`. The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just call `text` on `doc.css(...)` to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build `format_text` to not just get the text from the website, but to also capture the formatting used in the webpage's HTML to define the structure of the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed in the browser on GoodReads. This was tricky as the formatting was not uniform among book pages, so there were a number of unique cases that had to be considered. To keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
+The methods defined above pass `doc.css(<selector>)` into `format_text`--
+
+The book summary and about author sections of a book's webpage are given in paragraphs structured to present the text in a certain way, with a particular formatting and flow to the information. Rather than just call `text` on `doc.css(...)` to obtain a large string of text, and try to apply my own formatting to it later when it's being printed to the screen, I decided to build `format_text` to not just get the text from the website, but to also capture the formatting used in the webpage's HTML to define the structure of the text. This way we just need to call `puts` on the `summary` or `about_author` methods to achieve a layout almost identical to that viewed in the browser on GoodReads. This was tricky as the formatting was not uniform among book pages, so there were a number of unique cases that had to be considered. To keep this article at a reasonable length I'll forgo describing the mechanics of `format_text`. Perhaps I'll write a post detailing this method in the future.
 
 Once a book is displayed to the user `see_more_books_or_exit` and the user is given the option to start the selection over or exit the application.
 
