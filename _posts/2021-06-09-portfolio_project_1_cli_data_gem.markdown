@@ -93,9 +93,10 @@ class MostReadBooks::CLI
 
 Once our user selects an appropriate number of books to list, `get_book` is called:
 
-	
-
 ```
+class MostReadBooks::Book
+  . . .
+	
   def get_book
     print "Select a book number for details (1-#{@input}): "
     book_number = gets.strip.to_i
@@ -108,6 +109,9 @@ Once our user selects an appropriate number of books to list, `get_book` is call
       get_book
     end
   end
+  . . .
+	
+end
 ```
 
 The only instance variable defined in the CLI class is `@input` which shows up in `list_books` and `get_book`. The reason being is that I wanted these methods seperate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is precisely the information `@input` holds. 
@@ -138,6 +142,7 @@ Once the user has selected a book, `display_book` is called:
 end
 ```
 
+Checking back in on the Book class we see that 
 
 ```
 class MostReadBooks::Book
@@ -150,10 +155,16 @@ class MostReadBooks::Book
   def format
     @format ||= doc.css("#details .row")[0].text.split(/, | pages/).first
   end
+	
+	def page_count
+    @page_count ||= doc.css("#details .row")[0].text.split(/, | pages/).last
+  end
   . . .
 	
 end
+```
 
+```
 class MostReadBooks::Book
   . . .
 	
@@ -186,40 +197,6 @@ I didn't want summary and about_author to hold one large chunk of confusing text
 
 rather than capture a large block of text and format it afterwards I thought it best to capture the formatting as it came in.
 
-```
-  def format_text(element)
-    # issues at: 1, 8, 17, 21, 32, 50
-    # else condtions deals with non-text nodes that have their own text/formatting
-    text_array = element.children.map do |node|
-      if node.children.empty? 
-        node.text
-      else
-        node.children.map do |a|
-          a.text
-        end
-      end
-    end.flatten
-    
-    text_groups = text_array.chunk do |line|
-      line != "" && line != " "
-    end.to_a
-    
-    paragraphs = text_groups.map do |group|
-      group[1].join if group[0]
-    end.compact
-    
-    # removes a reference to an image seen on webpage.
-    paragraphs.delete_at(0) if paragraphs[0].downcase.include?("edition")
-
-    paragraph_lines = paragraphs.map do |paragraph|
-      paragraph.scan(/(.{1,75})(?:\s|$)/m)
-    end
-
-    paragraph_lines.map do |line|
-      line.join("\n") 
-    end.join("\n\n")
-  end
-```
 
 Don't get hung up on trying to build something profound.
 My suggestion is to not spend too much time on finding the perfect website or coming up with the most interesting idea. Pick a website that approximates the examples highlighted in the lessons and tutorial and just start coding. What makes a website harder or easier to work with will become clear as you start going through of building your application. At this point it's not such a big deal to scrap what you've been doing and choose another website because the way forward and potential pitfalls will be clear.  
