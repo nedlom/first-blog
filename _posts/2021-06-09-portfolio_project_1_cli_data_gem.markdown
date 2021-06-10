@@ -27,7 +27,7 @@ class MostReadBooks::Book
 end
 ```
 
-The data stored in the instance variables defined in `initialize` could be scraped directly from the main list and the remaining methods defined using `attr_accessor`  would extract their data from individual book pages.
+The data stored in the instance variables defined in `initialize` is scraped directly from the main list and the remaining methods defined using `attr_accessor`  extract their data from individual book pages.
 
 The first method called when the app starts up is, appropriately named I think, `start`.
 
@@ -48,7 +48,7 @@ class MostReadBooks::CLI
 end
 ```
 
-This method instanitates a new scraper object and and calls `scrape_books` on this new instance of Scraper: 
+`start` instanitates a Scraper object and and calls `scrape_books` on this new instance: 
 ```
   
 class MostReadBooks::Scraper
@@ -68,9 +68,9 @@ class MostReadBooks::Scraper
 end
 ```
 
-This is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's Nokogiri::HTML method which creates a Nokogiri object (NodeSet) that we call #css method on to extract data. It then iterates over a NodeSet and uses the #css method to grab the ...
+`scrape_books` is the only method defined in the Scraper class. It's job is to pass the webpage's HTML to Nokogiri's `Nokogiri::HTML` method which creates a Nokogiri object that we can call `css` on to extract data. It then iterates over a NodeSet and uses the `css` method to grab the 
 
-It passes that data to the Book class where a new book instance is created.
+It passes that data to the Book class where a new instance is created and stored in array. 
 
 ```
 class MostReadBooks::CLI
