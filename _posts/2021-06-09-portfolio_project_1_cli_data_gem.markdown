@@ -68,7 +68,7 @@ class MostReadBooks::Scraper
 end
 ```
 
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over the appropriate NodeSet we use the `css` method to grab and store data in local variables. We then pass this data to Book's `new` method instaniating and saving a new Book object for each book in webpage's list. Our CLI class then lists the number of book objects our user wants to see:
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call `css` on to extract data. Iterating over the appropriate NodeSet we use the `css` method to grab and store data in local variables. We then pass this data to Book's `new` method instaniating and saving a new Book object for each book in the webpage's list. Our CLI class then lists the number of book objects our user wants to see:
 
 ```
 class MostReadBooks::CLI
@@ -91,6 +91,8 @@ class MostReadBooks::CLI
   end
 	```
 	
+	Once our user selects an appropriate number of books to list, `get_book` is called:
+	
   ```
   def get_book
     print "Select a book number for details (1-#{@input}): "
@@ -104,7 +106,11 @@ class MostReadBooks::CLI
       get_book
     end
   end
-  
+  ```
+The only instance variable defined in the CLI class is `@input` which shows up in `list_books` and `get_book`. The reason being is that I wanted these methods seperate, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books have been listed, which is precisely the information `@input` holds. 
+
+Once the user has selected a book, `display_book` is called:
+	```
   def display_book(book)
     puts "---Number #{MostReadBooks::Book.all.index(book) + 1} Most Read Book This Week"
     puts "Title: #{book.title}"
@@ -128,7 +134,6 @@ class MostReadBooks::CLI
 end
 ```
 
-The only instance variable defined in the CLI class is `@input`. The reason being that I wanted  `list_books` and `get_book` to be seperate methods, but given that a user can select how many books to list, and I only want them to be able to select a book from the list that was printed to the screen, `get_book` depends on the knowledge of how many books listed, which is precisely the information `@input` holds.
 
 ```
 class MostReadBooks::Book
