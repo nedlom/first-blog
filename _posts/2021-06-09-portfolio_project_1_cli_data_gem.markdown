@@ -11,13 +11,12 @@ Goodreads has number of book lists, with simple layouts, that link to individual
 ```
 class MostReadBooks::Book
 
-  attr_accessor :title, :author, :url, :ratings, :readers, :doc, :format, :page_count, :publisher, :summary, :about_author
+  attr_accessor :title, :author, :url, :avg_rating, :total_ratings, :readers, :doc, :format, :page_count, :publisher, :summary, :about_author
 
-  def initialize(title=nil, author=nil, url=nil, ratings=nil, readers=nil)
+  def initialize(title=nil, author=nil, url=nil, readers=nil)
     @title = title
     @author = author
     @url = url
-    @ratings = ratings
     @readers = readers
     self.class.all << self
   end
@@ -51,12 +50,11 @@ class MostReadBooks::Scraper
   def scrape_books
     page = Nokogiri::HTML(open("https://www.goodreads.com/book/most_read").read)
     page.css("tr").each do |b|
-      title = b.css("[itemprop='name']")[0].text
-      author = b.css("[itemprop='name']")[1].text
-      url = "https://www.goodreads.com/#{b.css(".bookTitle")[0]['href']}"
-      ratings = b.css(".minirating").text.strip
-      readers = b.css(".greyText.statistic").text.strip.split("\n")[0]
-      MostReadBooks::Book.new(title, author, url, ratings, readers)
+      title = b.css("[itemprop='name']").first.text
+      author = b.css("[itemprop='name']").last.text
+      url = "https://www.goodreads.com/#{b.css(".bookTitle").first['href']}"
+      readers = b.css(".greyText.statistic").text.strip.split("\n").first
+      MostReadBooks::Book.new(title, author, url, readers)
     end
   end
 	
@@ -117,6 +115,8 @@ class MostReadBooks::Book
     puts "---Number #{MostReadBooks::Book.all.index(book) + 1} Most Read Book This Week"
     puts "Title: #{book.title}"
     puts "Author: #{book.author}"
+    puts "Average Rating: #{book.avg_rating}"
+    puts "Total Ratings: #{book.total_ratings}"
     puts "Publisher: #{book.publisher}"
     puts "Format: #{book.format}"
     puts "Page Count: #{book.page_count}"
@@ -144,12 +144,16 @@ class MostReadBooks::Book
     @doc ||= Nokogiri::HTML(open(url).read)
   end
   
-  def format
-    @format ||= doc.css("#details .row")[0].text.split(/, | pages/).first
+  def avg_rating
+    @avg_rating ||= doc.css("[itemprop='ratingValue']").text.strip
   end
-	
-	def page_count
-    @page_count ||= doc.css("#details .row")[0].text.split(/, | pages/).last
+  
+  def total_ratings
+    @total_ratings ||= doc.css("[href='#other_reviews']").text.strip.split("\n").first
+  end
+  
+  def format
+    @format ||= doc.css("[itemprop='bookFormat']").text
   end
   . . .
 	
