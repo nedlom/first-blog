@@ -5,7 +5,7 @@ date:       2021-06-09 13:27:54 -0400
 permalink:  portfolio_project_1_cli_data_gem
 ---
 
-Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever the data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
+Flatiron School's first project tasked me with creating a command line interface (CLI) application. It would have to scrape data from a website, define classes that correspond to whatever that data represents, and provide an interface for users to interact with the objects modeling our data. Given the previous lessons, and the abundance of list-based websites on the topic, I made the obvious choice: books.
 
 Goodreads has number of book lists, with simple layouts, that link to individual book pages. Their *Most Read Books This Week In The United States* list felt like a good choice. It's content is dynamic and structure amenable to scraping. Three classes would suffice: Books, Scraper, and CLI. Inspection of the site determined the attributes, defined in the class below, that would be used to describe Book objects:
 ```
@@ -60,7 +60,7 @@ class MostReadBooks::Scraper
 	
 end
 ```
-`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call methods on to extract data. We call `css` on the Nokogiri object, pass in a css selector wrapped in a string, and a NodeSet is returned. Iterating over this set we assign data corresponding to Book attributes to local variables as we go, and then pass these variables to Book's `new` method which instantiates and saves a new Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which allows the user to select the number of books they want to see: 
+`scrape_books`, the only method defined in the Scraper class, passes the webpage's HTML to `Nokogiri::HTML` which creates a Nokogiri object that we can call methods on to extract data. We call `css` on the Nokogiri object, pass in a css selector wrapped in a string, and a NodeSet is returned. Iterating over this set we assign data corresponding to Book attributes to local variables as we go, and then pass these variables to Book's `new` method which instantiates and saves a Book object for each book in the webpage's list. `start`'s last command is a call to `list_books` which allows the user to select the number of books they want to see: 
 ```
 class MostReadBooks::CLI
   . . .
