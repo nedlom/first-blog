@@ -1,11 +1,11 @@
 # Site settings
 author: Nick Lombardi
-title: Flatiron School Projects
+title: Web Development Through Flatiron School
 header-img: img/home-bg.png
 email: nelom3@gmail.com
 copyright_name: Nick Lombardi
 description: > # this means to ignore newlines until "baseurl:"
-  Learning How To Build Software
+  Articles About Code
 baseurl: "" # the subpath of your site, e.g. /blog
 twitter_username: 
 github_username:  nedlom
